@@ -22,9 +22,10 @@ export const signup = async (req, res) => {
 
         // https://avatar-placeholder.iran.liara.run/
         // https://api.dicebear.com/
+        // Using PNG format for React Native compatibility (React Native doesn't support SVG)
 
-        const boyProfilePic = `https://api.dicebear.com/9.x/pixel-art/svg?seed=${username}&hair=short01`;
-        const girlProfilePic = `https://api.dicebear.com/9.x/pixel-art/svg?seed=${username}&hair=long01`;
+        const boyProfilePic = `https://api.dicebear.com/9.x/pixel-art/png?seed=${username}&hair=short01`;
+        const girlProfilePic = `https://api.dicebear.com/9.x/pixel-art/png?seed=${username}&hair=long01`;
 
         const newUser = await User({
             fullName,
