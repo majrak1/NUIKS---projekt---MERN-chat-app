@@ -1,6 +1,7 @@
 import React from 'react'
 import Conversations from './Conversations'
 import useLogout from '../../hooks/useLogout'
+import { Navigate, Route, Routes } from "react-router-dom";
 
 const Sidebar = () => {
     const { loading, logout } = useLogout()
@@ -43,6 +44,17 @@ const Sidebar = () => {
                         <span className='loading loading-spinner'></span>
                     )}
                 </div>
+
+                {/* button to navigate to files collection */}
+                <div>
+                    <a
+                        href="/files"
+                        className="text-sm text-gray-300 hover:text-white cursor-pointer"
+                    >
+                        Files
+                    </a>
+                </div>
+
             </div>
         </aside>
     )

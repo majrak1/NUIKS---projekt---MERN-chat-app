@@ -2,6 +2,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const apiFetch = async (endpoint, options = {}) => {
     // Ensure cookies (JWT) are sent cross-origin when backend uses cookie-based auth
+    console.log("options", options)
     const fetchOptions = {
         headers: { "Content-Type": "application/json", ...options.headers },
         credentials: "include", // <-- important: sends cookies

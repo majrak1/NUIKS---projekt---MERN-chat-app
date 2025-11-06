@@ -10,8 +10,11 @@ import userRoutes from './routes/user.routes.js';
 import connectToMongoDB from './db/connectToMongoDB.js';
 import protectRoute from './middleware/protectRoute.js';
 import Conversation from './models/conversation.model.js';
+import File from './models/file.model.js';
+import fileRoutes from './routes/file.routes.js';
 
 import { app, server } from './socket/socket.js'
+import multer from 'multer';
 
 dotenv.config();
 
@@ -30,6 +33,12 @@ app.use(cookieParser()); // to parse cookies from the request headers
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
+
+
+// files
+app.use("/api/files", fileRoutes);
+
+
 
 
 
@@ -132,12 +141,6 @@ app.post("/chatbot", protectRoute, async (req, res) => {
 
 
 
-
-
-
-// app.get('/', (req, res) => {
-//     res.send('Hello World!');
-// });
 
 server.listen(PORT, () => {
     connectToMongoDB();
