@@ -1,9 +1,11 @@
 import React from 'react'
 import useGetFiles from '../../hooks/useGetFiles';
 import { useState } from 'react';
+
 import FilePreview from '../../components/files/FilePreview';
 import File from '../../components/files/File';
 import FileChat from '../../components/files/FileChat';
+
 import useUploadFile from '../../hooks/useUploadFile';
 
 const Files = () => {
