@@ -19,12 +19,12 @@ const Sidebar = () => {
             </div>
 
             {/* Search */}
-            <div className='mb-3'>
+            {/* <div className='mb-3'>
                 <input
                     placeholder='Search'
                     className='w-full rounded-md bg-transparent border border-black/15 px-3 py-2 text-sm placeholder-gray-500'
                 />
-            </div>
+            </div> */}
 
             {/* Conversations list */}
             <div className='flex-1 overflow-auto'>

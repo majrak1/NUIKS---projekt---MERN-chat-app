@@ -27,9 +27,6 @@ const MessageContainer = () => {
                         <div className='flex-1'>
                             <div className='text-sm font-semibold text-gray-100'>{selectedConversation.fullName}</div>
                         </div>
-                        <div className='flex items-center gap-3 text-gray-400'>
-                            <button className='p-1 rounded hover:bg-black/10'>…</button>
-                        </div>
                     </div>
 
                     <div className='flex-1 overflow-auto chat-scroll bg-transparent'>
