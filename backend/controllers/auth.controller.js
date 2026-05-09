@@ -22,7 +22,7 @@ export const signup = async (req, res) => {
 
         // https://avatar-placeholder.iran.liara.run/
         // https://api.dicebear.com/
-        // Using PNG format for React Native compatibility (React Native doesn't support SVG)
+        // Using PNG format for React Native compatibility (React Native doesn't support SVGs out of the box for some reason??)
 
         const boyProfilePic = `https://api.dicebear.com/9.x/pixel-art/png?seed=${username}&hair=short01`;
         const girlProfilePic = `https://api.dicebear.com/9.x/pixel-art/png?seed=${username}&hair=long01`;
@@ -38,7 +38,6 @@ export const signup = async (req, res) => {
         if (newUser) {
             // generate JWT token
             generateTokenAndSetCookie(newUser._id, res);
-
 
             await newUser.save();
 
