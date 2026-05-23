@@ -26,7 +26,9 @@ const useUploadFile = () => {
 
             console.log("filetype", file)
 
-            const response = await fetch("http://localhost:2000/api/files/upload", {
+            // const response = await fetch("http://localhost:2000/api/files/upload", {
+            const baseUrl = import.meta.env.VITE_API_BASE_URL || "";
+            const response = await fetch(`${baseUrl}/api/files/upload`, {
                 method: "POST",
                 body: formData, // DO NOT set Content-Type manually
                 credentials: "include", // <-- important: sends cookies
