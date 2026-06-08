@@ -1,6 +1,7 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import { getReceiverSocketId, io } from "../socket/socket.js";
+import logger from "../utils/logger.js";
 
 export const sendMessage = async (req, res) => {
     try {
@@ -37,7 +38,7 @@ export const sendMessage = async (req, res) => {
 
         res.status(201).json({ message: "Message sent successfully", newMessage });
     } catch (error) {
-        console.error("Error sending message:", error.message);
+        logger.error("Error sending message", { error: error.message });
         res.status(500).json({ message: "Internal server error" });
     }
 };
@@ -55,7 +56,7 @@ export const getMessages = async (req, res) => {
 
         res.status(200).json(conversation.messages);
     } catch (error) {
-        console.error("Error getting messages:", error.message);
+        logger.error("Error getting messages", { error: error.message });
         res.status(500).json({ message: "Internal server error" });
     }
 };

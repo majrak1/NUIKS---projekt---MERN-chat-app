@@ -6,6 +6,9 @@ import cors from "cors";
 import messageRoutes from "./routes/message.routes.js";
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import { app, server } from "./socket/socket.js";
+import logger from "./utils/logger.js";
+import requestLogger from "./middleware/requestLogger.js";
+import { register, metricsMiddleware } from "./middleware/metricsMiddleware.js";
 
 dotenv.config();
 
@@ -19,12 +22,19 @@ app.use(cors({
 
 app.use(cookieParser());
 app.use(express.json());
+app.use(requestLogger);
+app.use(metricsMiddleware);
 
 app.use("/api/messages", messageRoutes);
 
 app.get("/health", (req, res) => res.json({ status: "ok", service: "messaging" }));
 
+app.get("/metrics", async (req, res) => {
+    res.set("Content-Type", register.contentType);
+    res.end(await register.metrics());
+});
+
 server.listen(PORT, () => {
     connectToMongoDB();
-    console.log(`Messaging service running on port ${PORT}`);
+    logger.info(`Messaging service running on port ${PORT}`);
 });

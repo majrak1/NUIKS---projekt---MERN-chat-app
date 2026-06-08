@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
+import logger from "../utils/logger.js";
 
 export const signup = async (req, res) => {
     try {
@@ -39,7 +40,7 @@ export const signup = async (req, res) => {
             profilePic: newUser.profilePic,
         });
     } catch (error) {
-        console.error("Error in signup controller:", error.message);
+        logger.error("Error in signup controller", { error: error.message });
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
@@ -63,7 +64,7 @@ export const login = async (req, res) => {
             profilePic: user.profilePic,
         });
     } catch (error) {
-        console.error("Error in login controller:", error.message);
+        logger.error("Error in login controller", { error: error.message });
         res.status(500).json({ message: "Internal Server Error" });
     }
 };
@@ -73,7 +74,7 @@ export const logout = (req, res) => {
         res.cookie("jwt", "", { maxAge: 0 });
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
-        console.error("Error in logout controller:", error.message);
+        logger.error("Error in logout controller", { error: error.message });
         res.status(500).json({ message: "Internal Server Error" });
     }
 };

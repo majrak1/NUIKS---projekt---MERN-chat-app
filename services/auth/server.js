@@ -6,6 +6,9 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import sequelize from "./db/sequelize.js";
+import logger from "./utils/logger.js";
+import requestLogger from "./middleware/requestLogger.js";
+import { register, metricsMiddleware } from "./middleware/metricsMiddleware.js";
 
 dotenv.config();
 
@@ -20,24 +23,31 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(requestLogger);
+app.use(metricsMiddleware);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 
 app.get("/health", (req, res) => res.json({ status: "ok", service: "auth" }));
 
+app.get("/metrics", async (req, res) => {
+    res.set("Content-Type", register.contentType);
+    res.end(await register.metrics());
+});
+
 const startServer = async () => {
     try {
         await sequelize.authenticate();
-        console.log("PostgreSQL connected successfully.");
+        logger.info("PostgreSQL connected successfully");
         await sequelize.sync();
-        console.log("Database synced.");
+        logger.info("Database synced");
 
         app.listen(PORT, () => {
-            console.log(`Auth service running on port ${PORT}`);
+            logger.info(`Auth service running on port ${PORT}`);
         });
     } catch (error) {
-        console.error("Unable to start auth service:", error);
+        logger.error("Unable to start auth service", { error: error.message });
         process.exit(1);
     }
 };

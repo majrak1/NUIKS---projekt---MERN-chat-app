@@ -5,6 +5,10 @@ import cors from "cors";
 
 import fileRoutes from "./routes/file.routes.js";
 import connectToMongoDB from "./db/connectToMongoDB.js";
+import { ensureBucket } from "./utils/s3Client.js";
+import logger from "./utils/logger.js";
+import requestLogger from "./middleware/requestLogger.js";
+import { register, metricsMiddleware } from "./middleware/metricsMiddleware.js";
 
 dotenv.config();
 
@@ -19,15 +23,23 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(requestLogger);
+app.use(metricsMiddleware);
 
 app.use("/api/files", fileRoutes);
 
 app.get("/health", (req, res) => res.json({ status: "ok", service: "file" }));
 
+app.get("/metrics", async (req, res) => {
+    res.set("Content-Type", register.contentType);
+    res.end(await register.metrics());
+});
+
 const startServer = async () => {
     await connectToMongoDB();
+    await ensureBucket();
     app.listen(PORT, () => {
-        console.log(`File service running on port ${PORT}`);
+        logger.info(`File service running on port ${PORT}`);
     });
 };
 

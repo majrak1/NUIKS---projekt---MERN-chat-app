@@ -1,5 +1,6 @@
 import User from "../models/user.model.js";
 import { Op } from "sequelize";
+import logger from "../utils/logger.js";
 
 export const getUsersForSidebar = async (req, res) => {
     try {
@@ -19,7 +20,7 @@ export const getUsersForSidebar = async (req, res) => {
 
         res.status(200).json(usersFormatted);
     } catch (error) {
-        console.error("Error fetching users for sidebar:", error);
+        logger.error("Error fetching users for sidebar", { error: error.message });
         res.status(500).json({ message: "Server error" });
     }
 };

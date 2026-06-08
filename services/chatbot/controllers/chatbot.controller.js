@@ -1,6 +1,7 @@
 import axios from "axios";
 import Conversation from "../models/conversation.model.js";
 import "../models/message.model.js";
+import logger from "../utils/logger.js";
 
 const PROVIDER = process.env.AI_PROVIDER || "groq";
 
@@ -94,7 +95,7 @@ Guidelines:
         const reply = response.data.choices?.[0]?.message?.content?.trim() || "No reply received";
         res.json({ reply });
     } catch (err) {
-        console.error("Error calling AI API:", err.response?.data || err.message);
+        logger.error("Error calling AI API", { error: err.response?.data || err.message });
         res.status(500).json({ error: "Failed to generate AI response" });
     }
 }
